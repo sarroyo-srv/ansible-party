@@ -1,0 +1,16 @@
+- hosts: debians
+  become: yes
+  gather_facts: no
+  vars:
+    command: "date"
+  tasks:
+    - name: Install aptitude
+      shell: 'apt-get install -y aptitude'
+    - name: Actualizar paquetes
+      apt:
+        upgrade: dist
+        update_cache: yes
+    - name: Instalamos algunos paquetes
+      apt: name={{ item.name }}
+      with_items:
+        - { name: 'htop' }

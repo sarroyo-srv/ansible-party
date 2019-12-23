@@ -1,0 +1,28 @@
+Vagrant.configure(2) do |config|
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = false
+    vb.customize ["modifyvm", :id, "--memory", "1024"]
+    vb.customize ["modifyvm", :id, "--usb", "off"]
+  end
+  
+  MACHINE = ["debians"]
+
+  N = 3
+
+  (1..N).each do |i|
+
+  config.vm.define "debians#{i}" do |nodes|
+   
+    nodes.vm.box = "debian/stretch64"
+    nodes.vm.hostname = MACHINE[i]
+    nodes.vm.network "public_network", bridge: "en0"
+    nodes.vm.network "private_network", ip: "192.168.222.#{200+i}"
+
+    nodes.vm.provision "init", type:"ansible"  do |ansible|
+      ansible.inventory_path = "../ansible-init/inventory/hosts_debians"
+      ansible.playbook = "../ansible-init/playbooks/vagrant.yml"
+    end
+  end
+  end
+end

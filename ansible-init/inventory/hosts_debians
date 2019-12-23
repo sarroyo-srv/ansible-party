@@ -1,0 +1,11 @@
+[debians]
+# Needed to vagrant provision
+debians1 ansible_host=192.168.222.201 ansible_user=vagrant ansible_hostname=debians1
+debians2 ansible_host=192.168.222.202 ansible_user=vagrant ansible_hostname=debians2
+debians3 ansible_host=192.168.222.203 ansible_user=vagrant ansible_hostname=debians3
+
+[control]
+control ansible_connection=local
+
+[debians:vars]
+var=foo
